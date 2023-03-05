@@ -16,11 +16,29 @@ export const GameStateProvider = ({ children }) => {
     tools: {},
   });
 
+  const [availableLocations, setAvailableLocations] = useState({
+    LovelyWoods: {
+      name: "Lovely Woods",
+      description: "A light and friendly forest",
+    },
+  });
+
+  const [currentLocation, setCurrentLocation] = useState("LovelyWoods");
+
   const [availableResources, setAvailableResources] = useState({});
 
   return (
     <GameStateContext.Provider
-      value={{ user, setUser, availableResources, setAvailableResources }}
+      value={{
+        user,
+        setUser,
+        availableResources,
+        setAvailableResources,
+        availableLocations,
+        setAvailableLocations,
+        currentLocation,
+        setCurrentLocation,
+      }}
     >
       {children}
     </GameStateContext.Provider>
