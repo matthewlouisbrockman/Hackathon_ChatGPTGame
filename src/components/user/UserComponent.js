@@ -94,7 +94,7 @@ const RecipeDisplay = () => {
         }}
         style={{ cursor: "pointer" }}
       >
-        Recipes
+        Tool Recipes
         {isOpen ? " [-]" : " [+]"}
       </div>
       {isOpen && (
@@ -174,7 +174,7 @@ const TechnologyDisplay = () => {
   };
 
   return (
-    <div>
+    <div style={{ marginTop: "10px" }}>
       <div
         onClick={() => {
           setIsOpen(!isOpen);
@@ -197,9 +197,11 @@ const TechnologyDisplay = () => {
               </div>
             );
           })}
+          <button onClick={handleDiscoverNewTech}>
+            Discover New Technologies
+          </button>
         </>
       )}
-      <button onClick={handleDiscoverNewTech}>Discover New Technologies</button>
     </div>
   );
 };

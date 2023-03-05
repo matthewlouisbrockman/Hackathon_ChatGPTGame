@@ -5,9 +5,6 @@ export const GameStateContext = createContext();
 
 export const GameStateProvider = ({ children }) => {
   const [user, setUser] = useState({
-    level: 1,
-    experience: 0,
-    health: 100,
     resources: {},
     tools: {},
     recipes: {},

@@ -248,6 +248,7 @@ const discoverTechnology = ({props}) : DiscoverTechnologyResult = >{
   const availableResources = props.resources
   const existingTools = props.tools
   const existingRecipes = props.recipes
+  const existingTechnology = props.technology
 
   const thingsToDoWithResrouces = game.getThingsToDoWithResources(availableResources, existingTools, existingRecipes) //just evaluate what the avaialbleResources can be used for and use that to determine what the user might want to make
 
@@ -259,6 +260,7 @@ console.log(discoverTechnology(${JSON.stringify({
     resources: player.resources,
     tools: player.tools,
     recipes: player.recipes,
+    technology: player.technologies,
   })}))
 AI:`;
 
