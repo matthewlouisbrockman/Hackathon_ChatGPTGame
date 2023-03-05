@@ -64,7 +64,15 @@ const RecipeDisplay = () => {
       }
     });
     if (hasResources) {
-      console.log("has resources");
+      //subtract the resources
+      Object.keys(recipeResources).forEach((resource) => {
+        user.resources[resource] -= recipeResources[resource];
+      });
+      //add the tool
+      user.tools[recipe] = true;
+      setMessages((prevState) => {
+        return [...prevState, `You have created a ${recipe}`];
+      });
     } else {
       setMessages((prevState) => {
         return [

@@ -108,7 +108,6 @@ const LocationDisplayComponent = () => {
         });
       }
       if (res.success) {
-        console.log("wooo");
         addResourceToUser(res.loot);
         //remove the count of deployed resources from the location
         const newLocationTable = { ...locationTable };
