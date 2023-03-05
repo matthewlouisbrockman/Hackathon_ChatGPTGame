@@ -21,8 +21,13 @@ const WorldComponentContainer = styled.div`
 `;
 
 const LocationDisplayComponent = () => {
-  const { currentLocation, locationTable, setLocationTable, setUser } =
-    useContext(GameStateContext);
+  const {
+    currentLocation,
+    locationTable,
+    setLocationTable,
+    setUser,
+    setMessages,
+  } = useContext(GameStateContext);
 
   console.log("location", currentLocation);
 
@@ -31,6 +36,12 @@ const LocationDisplayComponent = () => {
       console.log("res", res);
       //this returns [{"name", "count"}] - update the locationTable[currentLocation].resources with the new resources
       const newResources = res.resources;
+      const newMessage = res.message;
+      if (newMessage) {
+        setMessages((prevState) => {
+          return [...prevState, newMessage];
+        });
+      }
       newResources.forEach((resource) => {
         const name = resource.name;
         const count = resource.count;
