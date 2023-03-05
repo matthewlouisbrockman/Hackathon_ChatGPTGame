@@ -15,12 +15,16 @@ export const UserComponent = () => {
 const UserStatusComponent = ({ user }) => {
   return (
     <div>
-      <h1>User Status Component</h1>
-      <p>Level: {user.level}</p>
-      <p>Experience: {user.experience}</p>
-      <p>Health: {user.health}</p>
+      <p>Your Stats</p>
       <p>Resources: {JSON.stringify(user.resources)}</p>
       <p>Tools: {JSON.stringify(user.tools)}</p>
+      <div>
+        Recipes
+        <div></div>
+      </div>
+      <div>
+        <button>Discover New Tools</button>
+      </div>
     </div>
   );
 };

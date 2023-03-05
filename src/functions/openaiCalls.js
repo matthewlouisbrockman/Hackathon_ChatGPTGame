@@ -123,3 +123,98 @@ AI:`;
   console.log("Resource gathered, returning", parsed);
   return parsed;
 };
+
+export const createTool = async (player, tool) => {
+  const prompt = `from advancedAI import game //this is an advanced module that can do various AI tasks
+
+interface Resource {
+  "name": str // the name of the resource used to create the tool (e.g. "wood", or "rocks")
+  "count" : int // the count
+}
+
+interface Tool {
+  "name": str // the name of the tool (e.g. "axe", or "hammer")
+  "count" : int // the count
+}
+
+interface CreateToolResult {
+  "success": bool // whether the player was successful in creating the tool
+  "resourcesUsed": Resource[] // the resources used to create the tool
+  "tool": Tool // the tool created
+  "message": str // a message to display to the user in a story format about what happened involving the depleted resources and tools used. Make the story descriptive.
+}
+
+const createTool = ({props}) : CreateToolResult = >{
+  const availableResources = props.player.resources
+  const availableTools = props.player.tools
+
+  //given the user's skills and tools, determine whether the player can create the tool given their tools.
+  if (game.canCreateTool(props.tool, availableResources, availableTools)){
+    //if they can, return the tool and a success message
+    return game.createTool(props.tool, availableResources, availableTools)
+  } else {
+    //if they can't, return a failure message
+    return {
+      success: false,
+      message: "You don't have the resources to create this tool " + game.getMissingResources(props.tool, availableResources, availableTools)
+    }
+  }
+}
+
+//print the result
+console.log('AI:', createTool(${JSON.stringify({
+    player,
+    tool,
+  })}))
+AI:`;
+  const responses = await query(prompt);
+  console.log("responses", responses);
+  const parsed = JSON.parse(responses[0]);
+
+  if (parsed.error) {
+    console.log("error: ", parsed.error);
+    return [];
+  }
+
+  console.log("Tool created, returning", parsed);
+  return parsed;
+};
+
+export const discoverTool = async (player) => {
+  const prompt = `from advancedAI import game //this is an advanced module that can do various AI tasks
+
+interface Tool {
+  "name": str // the name of the tool (e.g. "axe", or "hammer")
+  "ingrediants": {[name: str]: int]} // the ingrediants required to create the tool 
+}
+
+interface DiscoverToolResult {
+  "success": bool // whether the player was successful in discovering the tool
+  "tool": Tool // the tool discovered
+  "message": str // a message to display to the user in a story format about what happened involving the depleted resources and tools used. Make the story descriptive.
+}
+
+const discoverTool = ({props}) : DiscoverToolResult = >{
+  // given the user's skills and tools, determine a list of tools the user can create given their tools
+  const availableResources = props.player.resources
+  const availableTools = props.player.tools
+  return game.discoverTool(availableResources, availableTools)
+}
+
+//print the result
+console.log('AI:', discoverTool(${JSON.stringify({
+    player,
+  })}))
+AI:`;
+  const responses = await query(prompt);
+  console.log("responses", responses);
+  const parsed = JSON.parse(responses[0]);
+
+  if (parsed.error) {
+    console.log("error: ", parsed.error);
+    return [];
+  }
+
+  console.log("Tool discovered, returning", parsed);
+  return parsed;
+};
