@@ -34,8 +34,7 @@ const UserStatusComponent = ({ user }) => {
       <p>Resources: {JSON.stringify(user.resources)}</p>
       <p>Tools: {JSON.stringify(user.tools)}</p>
       {!!Object.keys(user.resources || {})?.length && <RecipeDisplay />}
-      {!!Object.keys(user.recipes || {})?.length && <TechnologyDisplay />}
-      {!!Object.keys(user.technologies || {})?.length && <BuildingDisplay />}
+      {!!Object.keys(user.recipes || {})?.length && <BluePrintsDisplay />}
       <div></div>
     </div>
   );
@@ -218,11 +217,11 @@ const TechnologyDisplay = () => {
   );
 };
 
-const BuildingDisplay = () => {
+const BluePrintsDisplay = () => {
   const [isOpen, setIsOpen] = useState(true);
   const { user, setUser, setMessages } = useContext(GameStateContext);
 
-  const buildings = user.buildings;
+  const blueprints = user.blueprints;
 
   const handleDiscoverNewBuilding = () => {
     createBuildingBlueprint(user).then((res) => {
@@ -258,17 +257,17 @@ const BuildingDisplay = () => {
       </div>
       {isOpen && (
         <>
-          {Object.keys(buildings || {}).length === 0 && <p>No Buildings</p>}
-          {Object.keys(buildings || {}).map((building) => {
+          {Object.keys(blueprints || {}).length === 0 && <p>No blueprints</p>}
+          {Object.keys(blueprints || {}).map((building) => {
             return (
               <div>
-                <div>{building}:</div>
-                <div>{buildings[building]}</div>
+                <div>{blueprints}:</div>
+                <div>{blueprints[building]}</div>
               </div>
             );
           })}
           <button onClick={handleDiscoverNewBuilding}>
-            Plan New Buildings
+            Discover New Blueprint
           </button>
         </>
       )}

@@ -297,18 +297,17 @@ const createBuildingBlueprint = ({props}) : CreateBuildingBlueprintResult = >{
   // given the user's resources and tools, come up with a building and the required resources it will take to build it
   const availableResources = props.resources
   const availableTools = props.tools
-  const existingTechnology = props.technology
   const existingBluePrints = props.blueprints
+  const existingBuildings = props.buildings
 
   //create a new building type that isn't already in the list of existing blueprints
-  const newBuildingBlueprint = game.discoverBuildingBlueprint(availableResources, availableTools, existingTechnology, existingBuildings, existingBluePrints)
+  const newBuildingBlueprint = game.discoverBuildingBlueprint(availableResources, availableTools, existingBuildings, existingBluePrints)
 }
 
 //print the result
 console.log(createBuildingBlueprint(${JSON.stringify({
     resources: player.resources,
     tools: Object.keys(player.tools),
-    technologies: player.technologies,
     buildings: player.buildings,
     blueprints: player.blueprints,
   })}))
