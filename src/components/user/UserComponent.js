@@ -238,6 +238,7 @@ const BluePrintsDisplay = () => {
         user.blueprints[newBluePrint.name] = {
           description: newBluePrint.description,
           resources: newBluePrint.resources,
+          dailyResources: newBluePrint.dailyResources,
         };
         setUser({ ...user });
       }
@@ -271,16 +272,48 @@ const BluePrintsDisplay = () => {
                   <button>Create</button>
                   <div>{blueprint}:</div>
                 </div>
-                {Object.keys(blueprints[blueprint]?.resources || {}).map(
-                  (ingredient) => {
-                    return (
-                      <RecipeIngredient>
-                        <div>{ingredient}: </div>
-                        <div>{blueprints[blueprint].resources[ingredient]}</div>
-                      </RecipeIngredient>
-                    );
-                  }
-                )}
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: "10px",
+                  }}
+                >
+                  <div>Requires: </div>
+                  {Object.keys(blueprints[blueprint]?.resources || {}).map(
+                    (ingredient) => {
+                      return (
+                        <RecipeIngredient>
+                          <div>{ingredient}: </div>
+                          <div>
+                            {blueprints[blueprint].resources[ingredient]}
+                          </div>
+                        </RecipeIngredient>
+                      );
+                    }
+                  )}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: "10px",
+                  }}
+                >
+                  <div>Produces: </div>
+                  {Object.keys(blueprints[blueprint]?.dailyResources || {}).map(
+                    (ingredient) => {
+                      return (
+                        <RecipeIngredient>
+                          <div>{ingredient}: </div>
+                          <div>
+                            {blueprints[blueprint].dailyResources[ingredient]}
+                          </div>
+                        </RecipeIngredient>
+                      );
+                    }
+                  )}
+                </div>
               </RecipeOutline>
             );
           })}
