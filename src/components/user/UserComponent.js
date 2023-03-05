@@ -18,12 +18,20 @@ export const UserComponent = () => {
 
 const UserStatusComponent = ({ user }) => {
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        "flex-direction": "column",
+        "max-height": "calc(100vh - 140px)",
+        "overflow-y": "scroll",
+      }}
+    >
       <p>Your Stats</p>
       <p>Resources: {JSON.stringify(user.resources)}</p>
       <p>Tools: {JSON.stringify(user.tools)}</p>
       {!!Object.keys(user.resources || {})?.length && <RecipeDisplay />}
       {!!Object.keys(user.recipes || {})?.length && <TechnologyDisplay />}
+      {!!Object.keys(user.technologies || {})?.length && <BuildingDisplay />}
       <div></div>
     </div>
   );
@@ -194,6 +202,61 @@ const TechnologyDisplay = () => {
               <div>
                 <div>{technology}:</div>
                 <div>{technologies[technology]}</div>
+              </div>
+            );
+          })}
+          <button onClick={handleDiscoverNewTech}>
+            Discover New Technologies
+          </button>
+        </>
+      )}
+    </div>
+  );
+};
+
+const BuildingDisplay = () => {
+  const [isOpen, setIsOpen] = useState(true);
+  const { user, setUser, setMessages } = useContext(GameStateContext);
+
+  const buildings = user.buildings;
+
+  const handleDiscoverNewTech = () => {
+    discoverTechnology(user).then((res) => {
+      console.log("res", res);
+      const newTech = res.technology;
+      const newMessage = res.message;
+      if (newMessage) {
+        setMessages((prevState) => {
+          return [...prevState, newMessage];
+        });
+      }
+      if (newTech) {
+        console.log("newTech", newTech);
+        user.technologies[newTech.name] = newTech.description;
+        setUser({ ...user });
+      }
+    });
+  };
+
+  return (
+    <div style={{ marginTop: "10px" }}>
+      <div
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}
+        style={{ cursor: "pointer" }}
+      >
+        Buildings
+        {isOpen ? " [-]" : " [+]"}
+      </div>
+      {isOpen && (
+        <>
+          {Object.keys(buildings || {}).length === 0 && <p>No Buildings</p>}
+          {Object.keys(buildings || {}).map((building) => {
+            return (
+              <div>
+                <div>{building}:</div>
+                <div>{buildings[building]}</div>
               </div>
             );
           })}
