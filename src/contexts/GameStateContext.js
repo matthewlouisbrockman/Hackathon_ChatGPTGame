@@ -10,6 +10,7 @@ export const GameStateProvider = ({ children }) => {
     health: 100,
     resources: {},
     tools: {},
+    recipes: {},
   });
 
   const [locationTable, setLocationTable] = useState({

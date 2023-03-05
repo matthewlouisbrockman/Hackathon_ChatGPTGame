@@ -181,29 +181,37 @@ AI:`;
 };
 
 export const discoverTool = async (player) => {
+  console.log("player: ", player);
   const prompt = `from advancedAI import game //this is an advanced module that can do various AI tasks
 
 interface Tool {
-  "name": str // the name of the tool (e.g. "axe", or "hammer")
-  "ingrediants": {[name: str]: int]} // the ingrediants required to create the tool 
+  "name": str // the name of the tool (e.g. "stone axe", or "steel hammer", but should be variable like "fishing net" or "rope")
+  "resources": {[name: str]: int]} // the ingrediants required to create the tool (e.g. stone axe requires 1 stone and 1 wood, so ingrediants would be {"stone": 1, "wood": 1})
 }
 
 interface DiscoverToolResult {
-  "success": bool // whether the player was successful in discovering the tool
+  "process": str //list a few of the users' resources and think about how they could be used to make a tool
   "tool": Tool // the tool discovered
-  "message": str // a message to display to the user in a story format about what happened involving the depleted resources and tools used. Make the story descriptive.
+  "success": bool // whether the user has the resources to make the tool
+  "message": str // a message to display to the user in a story format about their resources could be used to make a tool (but they haven't made it yet)
 }
 
-const discoverTool = ({props}) : DiscoverToolResult = >{
-  // given the user's skills and tools, determine a list of tools the user can create given their tools
-  const availableResources = props.player.resources
-  const availableTools = props.player.tools
-  return game.discoverTool(availableResources, availableTools)
+const discoverToolRecipe = ({props}) : DiscoverToolResult = >{
+  // given the user's resources and tools, determine a new tool the user might want to make (it shouldn't be in the user recipes already)
+  const availableResources = props.resources
+  const existingTools = props.tools
+  const existingRecipes = props.recipes
+
+  const thingsToDoWithResrouces = game.getThingsToDoWithResources(availableResources, existingTools, existingRecipes) //just evaluate what the avaialbleResources can be used for and use that to determine what the user might want to make
+
+  return game.discoverToolRecipe(availableResources, availableTools, existingRecipes)
 }
 
 //print the result
-console.log('AI:', discoverTool(${JSON.stringify({
-    player,
+console.log(discoverToolRecipe(${JSON.stringify({
+    resources: player.resources,
+    tools: player.tools,
+    recipes: player.recipes,
   })}))
 AI:`;
   const responses = await query(prompt);
