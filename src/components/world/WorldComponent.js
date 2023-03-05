@@ -78,6 +78,21 @@ const LocationDisplayComponent = () => {
     });
   };
 
+  const handleAttemptToGatherResource = (resource) => {
+    attemptToGatherResource(resource).then((res) => {
+      console.log("res", res);
+      const newMessage = res.message;
+      if (newMessage) {
+        setMessages((prevState) => {
+          return [...prevState, newMessage];
+        });
+      }
+      if (res.success) {
+        console.log("wooo");
+      }
+    });
+  };
+
   return (
     <LocationDisplayComponentWindow>
       <div>
@@ -97,7 +112,7 @@ const LocationDisplayComponent = () => {
                 {" "}
                 <button
                   onClick={() => {
-                    attemptToGatherResource(resource);
+                    handleAttemptToGatherResource(resource);
                   }}
                 >
                   Gather

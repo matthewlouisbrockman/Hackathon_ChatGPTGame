@@ -1,12 +1,21 @@
 import styled from "@emotion/styled";
-import { useContext } from "react";
+import { useContext, useRef, useEffect } from "react";
 import { GameStateContext } from "../../contexts/GameStateContext";
 
 export const SystemComponent = () => {
   const { messages } = useContext(GameStateContext);
 
+  const scrollRef = useRef(null);
+
+  const scrollToBottom = () => {
+    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
-    <DisplayWindow>
+    <DisplayWindow ref={scrollRef}>
       {!messages.length && (
         <p>
           Welcome to Hackathon_ChatGPTGame! Start clicking on stuff to get
@@ -14,7 +23,7 @@ export const SystemComponent = () => {
         </p>
       )}
       {messages.map((message, index) => {
-        return <p key={index}>{message}</p>;
+        return <div key={index}>{message}</div>;
       })}
     </DisplayWindow>
   );
@@ -26,4 +35,7 @@ const DisplayWindow = styled.div`
   height: 80px;
   backgroundcolor: white;
   color: black;
+  overflow-y: scroll;
+  padding: 5px;
+  gap: 10px;
 `;
