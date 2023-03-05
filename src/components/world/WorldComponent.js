@@ -11,13 +11,29 @@ export const WorldComponent = () => {
 };
 
 const LocationDisplayComponent = () => {
-  const { currentLocation, locationTable } = useContext(GameStateContext);
+  const { currentLocation, locationTable, setLocationTable } =
+    useContext(GameStateContext);
 
   console.log("location", currentLocation);
 
-  const handleExploreLocation = () => {
-    exploreLocation(currentLocation);
+  const handleExploreLocation = async () => {
+    exploreLocation(currentLocation).then((newResources) => {
+      console.log("newResources", newResources);
+      //this returns [{"name", "count"}] - update the locationTable[currentLocation].resources with the new resources
+      newResources.forEach((resource) => {
+        const name = resource.name;
+        const count = resource.count;
+        if (locationTable[currentLocation].resources[name]) {
+          locationTable[currentLocation].resources[name] += count;
+        } else {
+          locationTable[currentLocation].resources[name] = count;
+        }
+      });
+      setLocationTable({ ...locationTable });
+    });
   };
+
+  console.log("locationTable[currentLocation]", locationTable[currentLocation]);
 
   return (
     <div>

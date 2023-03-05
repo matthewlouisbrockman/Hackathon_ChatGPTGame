@@ -65,9 +65,6 @@ console.log('AI:', exploreForResources(${JSON.stringify({
 
   const responses = await query(prompt);
   const response = "[" + responses[0];
-
-  console.log("response: ", response);
-
   const parsed = JSON.parse(response);
 
   if (parsed.error) {
@@ -75,5 +72,6 @@ console.log('AI:', exploreForResources(${JSON.stringify({
     return [];
   }
 
+  console.log("got resources, returning");
   return parsed;
 };
