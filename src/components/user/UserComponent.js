@@ -45,7 +45,10 @@ const RecipeDisplay = () => {
         });
       }
       if (newRecipe) {
-        user.recipes[newRecipe.name] = newRecipe.resources;
+        user.recipes[newRecipe.name] = {
+          resources: newRecipe.resources,
+          description: newRecipe.description,
+        };
       }
     });
   };
@@ -54,7 +57,7 @@ const RecipeDisplay = () => {
     //create the tool
     console.log("making tool", recipe);
     //check if the user has the resources
-    const recipeResources = recipes[recipe];
+    const recipeResources = recipes[recipe].resources;
     const userResources = user.resources;
     let hasResources = true;
 
@@ -109,14 +112,16 @@ const RecipeDisplay = () => {
                   Create
                 </button>
                 <div>{recipe}:</div>
-                {Object.keys(recipes[recipe] || {}).map((ingredient) => {
-                  return (
-                    <RecipeIngredient>
-                      <div>{ingredient}: </div>
-                      <div>{recipes[recipe][ingredient]}</div>
-                    </RecipeIngredient>
-                  );
-                })}
+                {Object.keys(recipes[recipe]?.resources || {}).map(
+                  (ingredient) => {
+                    return (
+                      <RecipeIngredient>
+                        <div>{ingredient}: </div>
+                        <div>{recipes[recipe].resources[ingredient]}</div>
+                      </RecipeIngredient>
+                    );
+                  }
+                )}
               </RecipeRow>
             );
           })}

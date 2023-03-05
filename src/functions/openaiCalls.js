@@ -187,6 +187,7 @@ export const discoverTool = async (player) => {
 interface Tool {
   "name": str // the name of the tool (e.g. "stone axe", or "steel hammer", but should be variable like "fishing net" or "rope")
   "resources": {[name: str]: int]} // the ingrediants required to create the tool (e.g. stone axe requires 1 stone and 1 wood, so ingrediants would be {"stone": 1, "wood": 1})
+  "description": str // a description of the tool and how it can be used
 }
 
 interface DiscoverToolResult {
