@@ -1,29 +1,35 @@
 import { useContext } from "react";
 import { GameStateContext } from "../../contexts/GameStateContext";
+import { exploreLocation } from "../../functions/openaiCalls";
 
 export const WorldComponent = () => {
-  const { currentLocation, locationTable, setLocationTable } =
-    useContext(GameStateContext);
-
-  console.log("locationTable", locationTable);
-  console.log("currentLocation", currentLocation);
-  console.log("locationTable[currentLocation]", locationTable[currentLocation]);
-
   return (
     <div>
-      <LocationDisplayComponent
-        location={currentLocation}
-        locationTable={locationTable}
-      />
+      <LocationDisplayComponent />
     </div>
   );
 };
 
-const LocationDisplayComponent = ({ location, locationTable }) => {
+const LocationDisplayComponent = () => {
+  const { currentLocation, locationTable } = useContext(GameStateContext);
+
+  console.log("location", currentLocation);
+
+  const handleExploreLocation = () => {
+    exploreLocation(currentLocation);
+  };
+
   return (
     <div>
-      <p>Location: {location}</p>
-      <p>Location Info: {JSON.stringify(locationTable[location])}</p>
+      <p>Location: {currentLocation}</p>
+      <p>Location Info: {JSON.stringify(locationTable[currentLocation])}</p>
+      <button
+        onClick={() => {
+          handleExploreLocation();
+        }}
+      >
+        Explore
+      </button>
     </div>
   );
 };
