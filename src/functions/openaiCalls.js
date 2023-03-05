@@ -46,6 +46,7 @@ export const exploreLocation = async (player, location) => {
   
 interface Resource {
     "name": str // the name of the resource found at the location (e.g. "tree", or "rocks" "water" might be in a forest but vary it)
+    "count" : int // the number of this resource found at the location
 }
 
 const exploreForResources = ({props}) : Resource[] =>{
