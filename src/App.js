@@ -2,18 +2,22 @@ import styled from "@emotion/styled";
 import { UserComponent } from "./components/user/UserComponent";
 import { WorldComponent } from "./components/world/WorldComponent";
 
+import { GameStateProvider } from "./contexts/GameStateContext";
+
 function App() {
   return (
-    <MainPage>
-      <GameDisplayRow>
-        <GameDisplayPanel>
-          <UserComponent />
-        </GameDisplayPanel>
-        <GameDisplayPanel>
-          <WorldComponent />
-        </GameDisplayPanel>
-      </GameDisplayRow>
-    </MainPage>
+    <GameStateProvider>
+      <MainPage>
+        <GameDisplayRow>
+          <GameDisplayPanel>
+            <UserComponent />
+          </GameDisplayPanel>
+          <GameDisplayPanel>
+            <WorldComponent />
+          </GameDisplayPanel>
+        </GameDisplayRow>
+      </MainPage>
+    </GameStateProvider>
   );
 }
 
