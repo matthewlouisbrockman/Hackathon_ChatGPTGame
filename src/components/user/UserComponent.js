@@ -3,7 +3,11 @@ import styled from "@emotion/styled";
 import { useContext, useState } from "react";
 import { GameStateContext } from "../../contexts/GameStateContext";
 
-import { discoverTool, discoverTechnology } from "../../functions/openaiCalls";
+import {
+  discoverTool,
+  discoverTechnology,
+  dis,
+} from "../../functions/openaiCalls";
 
 export const UserComponent = () => {
   const { user } = useContext(GameStateContext);
