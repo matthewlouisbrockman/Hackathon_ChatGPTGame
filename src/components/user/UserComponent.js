@@ -22,16 +22,15 @@ const UserStatusComponent = ({ user }) => {
       <p>Your Stats</p>
       <p>Resources: {JSON.stringify(user.resources)}</p>
       <p>Tools: {JSON.stringify(user.tools)}</p>
-      <div>
-        <RecipeDisplay />
-      </div>
+      {!!Object.keys(user.resources || {})?.length && <RecipeDisplay />}
+
       <div></div>
     </div>
   );
 };
 
 const RecipeDisplay = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const { user, setMessages } = useContext(GameStateContext);
   const recipes = user.recipes;
   const handleDiscoverTool = () => {
@@ -55,7 +54,7 @@ const RecipeDisplay = () => {
 
   const handleCreateTool = (recipe) => {
     //create the tool
-    console.log("making tool", recipe);
+
     //check if the user has the resources
     const recipeResources = recipes[recipe].resources;
     const userResources = user.resources;
