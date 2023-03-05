@@ -258,12 +258,30 @@ const BluePrintsDisplay = () => {
       {isOpen && (
         <>
           {Object.keys(blueprints || {}).length === 0 && <p>No blueprints</p>}
-          {Object.keys(blueprints || {}).map((building) => {
+          {Object.keys(blueprints || {}).map((blueprint) => {
             return (
-              <div>
-                <div>{blueprints}:</div>
-                <div>{blueprints[building]}</div>
-              </div>
+              <RecipeOutline>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: "10px",
+                  }}
+                >
+                  <button>Create</button>
+                  <div>{blueprint}:</div>
+                </div>
+                {Object.keys(blueprints[blueprint]?.resources || {}).map(
+                  (ingredient) => {
+                    return (
+                      <RecipeIngredient>
+                        <div>{ingredient}: </div>
+                        <div>{blueprints[blueprint].resources[ingredient]}</div>
+                      </RecipeIngredient>
+                    );
+                  }
+                )}
+              </RecipeOutline>
             );
           })}
           <button onClick={handleDiscoverNewBuilding}>
@@ -274,3 +292,10 @@ const BluePrintsDisplay = () => {
     </div>
   );
 };
+
+const RecipeOutline = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  padding: 5px;
+`;
