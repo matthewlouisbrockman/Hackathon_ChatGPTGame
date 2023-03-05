@@ -78,6 +78,26 @@ const LocationDisplayComponent = () => {
     });
   };
 
+  const addResourceToUser = (loot) => {
+    //take an array of loot [{name, count}] and update the user's resources
+    loot.forEach((resource) => {
+      const name = resource.name;
+      const count = resource.count;
+      setUser((prevState) => {
+        const previousResourceCount = prevState.resources[name] || 0;
+        const newUser = {
+          ...prevState,
+          resources: {
+            ...prevState.resources,
+            [name]: previousResourceCount + count,
+          },
+        };
+
+        return newUser;
+      });
+    });
+  };
+
   const handleAttemptToGatherResource = (resource) => {
     attemptToGatherResource(resource).then((res) => {
       console.log("res", res);
@@ -89,6 +109,17 @@ const LocationDisplayComponent = () => {
       }
       if (res.success) {
         console.log("wooo");
+        addResourceToUser(res.loot);
+        //remove the count of deployed resources from the location
+        const newLocationTable = { ...locationTable };
+        if (newLocationTable[currentLocation].resources[resource]) {
+          //no less than 0 though
+          newLocationTable[currentLocation].resources[resource] = Math.max(
+            0,
+            newLocationTable[currentLocation].resources[resource] -
+              (res.depletion || 0)
+          );
+        }
       }
     });
   };
