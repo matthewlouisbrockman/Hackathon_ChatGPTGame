@@ -1,14 +1,21 @@
+import styled from "@emotion/styled";
 import { useContext } from "react";
 import { GameStateContext } from "../../contexts/GameStateContext";
 import { exploreLocation } from "../../functions/openaiCalls";
 
 export const WorldComponent = () => {
   return (
-    <div>
+    <WorldComponentContainer>
       <LocationDisplayComponent />
-    </div>
+    </WorldComponentContainer>
   );
 };
+
+const WorldComponentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
 
 const LocationDisplayComponent = () => {
   const { currentLocation, locationTable, setLocationTable } =
@@ -36,9 +43,28 @@ const LocationDisplayComponent = () => {
   console.log("locationTable[currentLocation]", locationTable[currentLocation]);
 
   return (
-    <div>
-      <p>Location: {currentLocation}</p>
-      <p>Location Info: {JSON.stringify(locationTable[currentLocation])}</p>
+    <LocationDisplayComponentWindow>
+      <div>
+        Location:
+        {locationTable[currentLocation]?.name}
+      </div>
+      <div>
+        Description
+        {locationTable[currentLocation]?.description}
+      </div>
+      <div>
+        Resources:
+        {Object.keys(locationTable[currentLocation]?.resources).map(
+          (resource) => {
+            return (
+              <div>
+                {resource}: {locationTable[currentLocation].resources[resource]}
+              </div>
+            );
+          }
+        )}
+      </div>
+
       <button
         onClick={() => {
           handleExploreLocation();
@@ -46,6 +72,16 @@ const LocationDisplayComponent = () => {
       >
         Explore
       </button>
-    </div>
+    </LocationDisplayComponentWindow>
   );
 };
+
+const LocationDisplayComponentWindow = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  overflow-y: scroll;
+  overlay-x: hidden;
+  //wrap the text
+`;
