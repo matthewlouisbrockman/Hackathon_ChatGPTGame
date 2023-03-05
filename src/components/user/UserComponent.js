@@ -23,7 +23,7 @@ const UserStatusComponent = ({ user }) => {
       <p>Resources: {JSON.stringify(user.resources)}</p>
       <p>Tools: {JSON.stringify(user.tools)}</p>
       {!!Object.keys(user.resources || {})?.length && <RecipeDisplay />}
-
+      {!!Object.keys(user.recipes || {})?.length && <TechnologyDisplay />}
       <div></div>
     </div>
   );
@@ -148,3 +148,20 @@ const RecipeIngredient = styled.div`
   flex-direction: row;
   gap: 5px;
 `;
+
+const TechnologyDisplay = () => {
+  const [isOpen, setIsOpen] = useState(true);
+  return (
+    <div>
+      <div
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}
+        style={{ cursor: "pointer" }}
+      >
+        Technologies
+        {isOpen ? " [-]" : " [+]"}
+      </div>
+    </div>
+  );
+};
