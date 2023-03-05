@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { useContext, useState } from "react";
 import { GameStateContext } from "../../contexts/GameStateContext";
 
-import { discoverTool } from "../../functions/openaiCalls";
+import { discoverTool, discoverTechnology } from "../../functions/openaiCalls";
 
 export const UserComponent = () => {
   const { user } = useContext(GameStateContext);
@@ -151,9 +151,27 @@ const RecipeIngredient = styled.div`
 
 const TechnologyDisplay = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const { user } = useContext(GameStateContext);
+  const { user, setUser, setMessages } = useContext(GameStateContext);
 
   const technologies = user.technologies;
+
+  const handleDiscoverNewTech = () => {
+    discoverTechnology(user).then((res) => {
+      console.log("res", res);
+      const newTech = res.technology;
+      const newMessage = res.message;
+      if (newMessage) {
+        setMessages((prevState) => {
+          return [...prevState, newMessage];
+        });
+      }
+      if (newTech) {
+        console.log("newTech", newTech);
+        user.technologies[newTech.name] = newTech.description;
+        setUser({ ...user });
+      }
+    });
+  };
 
   return (
     <div>
@@ -181,6 +199,7 @@ const TechnologyDisplay = () => {
           })}
         </>
       )}
+      <button onClick={handleDiscoverNewTech}>Discover New Technologies</button>
     </div>
   );
 };

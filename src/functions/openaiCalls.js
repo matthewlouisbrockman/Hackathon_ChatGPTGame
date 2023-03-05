@@ -227,3 +227,50 @@ AI:`;
   console.log("Tool discovered, returning", parsed);
   return parsed;
 };
+
+export const discoverTechnology = async (player) => {
+  const prompt = `from advancedAI import game //this is an advanced module that can do various AI tasks
+
+interface Technology {
+  "name": str // the name of the technology (e.g. "fire", or "fishing")
+  "description": str // a description of the technology and how it can be used
+}
+
+interface DiscoverTechnologyResult {
+  "process": str //list a few of the users' resources and think about how they could be used to make a tool
+  "technology": Technology // the technology discovered
+  "success": bool // whether the user has the resources to make the tool
+  "message": str // a message to display to the user in a story format about their resources could be used to make a tool (but they haven't made it yet)
+}
+
+const discoverTechnology = ({props}) : DiscoverTechnologyResult = >{
+  // given the user's resources and tools, determine a new technology that will enable the user to develop new tools and recipes
+  const availableResources = props.resources
+  const existingTools = props.tools
+  const existingRecipes = props.recipes
+
+  const thingsToDoWithResrouces = game.getThingsToDoWithResources(availableResources, existingTools, existingRecipes) //just evaluate what the avaialbleResources can be used for and use that to determine what the user might want to make
+
+  return game.discoverTechnology(availableResources, availableTools, existingRecipes)
+}
+
+//print the result
+console.log(discoverTechnology(${JSON.stringify({
+    resources: player.resources,
+    tools: player.tools,
+    recipes: player.recipes,
+  })}))
+AI:`;
+
+  const responses = await query(prompt);
+  console.log("responses", responses);
+  const parsed = JSON.parse(responses[0]);
+
+  if (parsed.error) {
+    console.log("error: ", parsed.error);
+    return [];
+  }
+
+  console.log("Technology discovered, returning", parsed);
+  return parsed;
+};
