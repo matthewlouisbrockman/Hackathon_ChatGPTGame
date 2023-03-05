@@ -18,7 +18,7 @@ const WorldComponentContainer = styled.div`
 `;
 
 const LocationDisplayComponent = () => {
-  const { currentLocation, locationTable, setLocationTable } =
+  const { currentLocation, locationTable, setLocationTable, setUser } =
     useContext(GameStateContext);
 
   console.log("location", currentLocation);
@@ -40,7 +40,28 @@ const LocationDisplayComponent = () => {
     });
   };
 
-  console.log("locationTable[currentLocation]", locationTable[currentLocation]);
+  const handleGather = (resource) => {
+    //gather the resource
+    //update the locationTable
+    const newLocationTable = { ...locationTable };
+    if (newLocationTable[currentLocation].resources[resource]) {
+      newLocationTable[currentLocation].resources[resource] -= 1;
+    }
+    //add to the user's resources
+    console.log("handling gather");
+    setUser((prevState) => {
+      const previousResourceCount = prevState.resources[resource] || 0;
+      const newUser = {
+        ...prevState,
+        resources: {
+          ...prevState.resources,
+          [resource]: previousResourceCount + 1,
+        },
+      };
+
+      return newUser;
+    });
+  };
 
   return (
     <LocationDisplayComponentWindow>
@@ -58,6 +79,15 @@ const LocationDisplayComponent = () => {
           (resource) => {
             return (
               <div>
+                {" "}
+                <button
+                  onClick={() => {
+                    handleGather(resource);
+                  }}
+                >
+                  Gather
+                </button>
+                {"  "}
                 {resource}: {locationTable[currentLocation].resources[resource]}
               </div>
             );

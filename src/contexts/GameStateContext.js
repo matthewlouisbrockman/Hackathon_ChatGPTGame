@@ -8,11 +8,7 @@ export const GameStateProvider = ({ children }) => {
     level: 1,
     experience: 0,
     health: 100,
-    resources: {
-      food: 0,
-      water: 0,
-      wood: 0,
-    },
+    resources: {},
     tools: {},
   });
 
