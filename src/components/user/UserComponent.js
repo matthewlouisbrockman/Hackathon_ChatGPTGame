@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GameStateContext } from "../../contexts/GameStateContext";
 
 import { discoverTool } from "../../functions/openaiCalls";
@@ -31,6 +31,7 @@ const UserStatusComponent = ({ user }) => {
 };
 
 const RecipeDisplay = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const { user, setMessages } = useContext(GameStateContext);
   const recipes = user.recipes;
   const handleDiscoverTool = () => {
@@ -50,33 +51,44 @@ const RecipeDisplay = () => {
   };
 
   //recipe is {[name]: count]}
-  console.log("recipes", recipes);
   return (
     <div>
-      <div>Recipes</div>
-      {Object.keys(recipes).length === 0 && <p>No Recipes</p>}
-      {Object.keys(recipes).map((recipe) => {
-        return (
-          <RecipeRow>
-            <div>{recipe}:</div>
-            {Object.keys(recipes[recipe] || {}).map((ingredient) => {
-              return (
-                <RecipeIngredient>
-                  <div>{ingredient}: </div>
-                  <div>{recipes[recipe][ingredient]}</div>
-                </RecipeIngredient>
-              );
-            })}
-          </RecipeRow>
-        );
-      })}
-      <button
+      <div
         onClick={() => {
-          handleDiscoverTool();
+          setIsOpen(!isOpen);
         }}
+        style={{ cursor: "pointer" }}
       >
-        Discover New Recipes
-      </button>
+        Recipes
+        {isOpen ? " [-]" : " [+]"}
+      </div>
+      {isOpen && (
+        <>
+          {Object.keys(recipes).length === 0 && <p>No Recipes</p>}
+          {Object.keys(recipes).map((recipe) => {
+            return (
+              <RecipeRow>
+                <div>{recipe}:</div>
+                {Object.keys(recipes[recipe] || {}).map((ingredient) => {
+                  return (
+                    <RecipeIngredient>
+                      <div>{ingredient}: </div>
+                      <div>{recipes[recipe][ingredient]}</div>
+                    </RecipeIngredient>
+                  );
+                })}
+              </RecipeRow>
+            );
+          })}
+          <button
+            onClick={() => {
+              handleDiscoverTool();
+            }}
+          >
+            Discover New Recipes
+          </button>
+        </>
+      )}
     </div>
   );
 };
