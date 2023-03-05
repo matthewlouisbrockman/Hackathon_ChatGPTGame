@@ -284,29 +284,30 @@ interface BuildingBlueprint {
   "name": str // the name of the building (e.g. "house", or "fishing hut")
   "description": str // a description of the building and how it can be used
   "resources": {[name: str]: int]} // the ingrediants required to create the building (e.g. house requires 1 stone and 1 wood, so ingrediants would be {"stone": 1, "wood": 1})
+  "dailyResources": {[name: str]: int]} // the resource the building can produce each day
 }
 
 interface CreateBuildingBlueprintResult {
   "success": bool // whether the user has the resources to make the building
-  "building": BuildingBlueprint // the building blueprint created
+  "blueprint": BuildingBlueprint // the building blueprint created
   "message": str // a message to display to the user in a story format about what happened involving the depleted resources and tools used. Make the story descriptive.
 }
 
 const createBuildingBlueprint = ({props}) : CreateBuildingBlueprintResult = >{
-  // given the user's resources and tools, determine whether the user can create a building blueprint
+  // given the user's resources and tools, come up with a building and the required resources it will take to build it
   const availableResources = props.resources
   const availableTools = props.tools
   const existingTechnology = props.technology
-  const existingBuildings = props.buildings
   const existingBluePrints = props.blueprints
 
+  //create a new building type that isn't already in the list of existing blueprints
   const newBuildingBlueprint = game.discoverBuildingBlueprint(availableResources, availableTools, existingTechnology, existingBuildings, existingBluePrints)
 }
 
 //print the result
 console.log(createBuildingBlueprint(${JSON.stringify({
     resources: player.resources,
-    tools: player.tools,
+    tools: Object.keys(player.tools),
     technologies: player.technologies,
     buildings: player.buildings,
     blueprints: player.blueprints,

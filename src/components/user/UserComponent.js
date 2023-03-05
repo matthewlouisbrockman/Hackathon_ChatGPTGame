@@ -6,7 +6,7 @@ import { GameStateContext } from "../../contexts/GameStateContext";
 import {
   discoverTool,
   discoverTechnology,
-  dis,
+  createBuildingBlueprint,
 } from "../../functions/openaiCalls";
 
 export const UserComponent = () => {
@@ -224,19 +224,22 @@ const BuildingDisplay = () => {
 
   const buildings = user.buildings;
 
-  const handleDiscoverNewTech = () => {
-    discoverTechnology(user).then((res) => {
+  const handleDiscoverNewBuilding = () => {
+    createBuildingBlueprint(user).then((res) => {
       console.log("res", res);
-      const newTech = res.technology;
+      const newBluePrint = res.blueprint;
       const newMessage = res.message;
       if (newMessage) {
         setMessages((prevState) => {
           return [...prevState, newMessage];
         });
       }
-      if (newTech) {
-        console.log("newTech", newTech);
-        user.technologies[newTech.name] = newTech.description;
+      if (newBluePrint) {
+        console.log("newBluePrint", newBluePrint);
+        user.blueprints[newBluePrint.name] = {
+          description: newBluePrint.description,
+          resources: newBluePrint.resources,
+        };
         setUser({ ...user });
       }
     });
@@ -264,8 +267,8 @@ const BuildingDisplay = () => {
               </div>
             );
           })}
-          <button onClick={handleDiscoverNewTech}>
-            Discover New Technologies
+          <button onClick={handleDiscoverNewBuilding}>
+            Plan New Buildings
           </button>
         </>
       )}
