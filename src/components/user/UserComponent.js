@@ -72,7 +72,7 @@ const RecipeDisplay = () => {
         user.resources[resource] -= recipeResources[resource];
       });
       //add the tool
-      user.tools[recipe] = true;
+      user.tools[recipe] = recipes[recipe].description;
       setMessages((prevState) => {
         return [...prevState, `You have created a ${recipe}`];
       });
