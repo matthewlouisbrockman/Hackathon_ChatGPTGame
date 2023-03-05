@@ -94,13 +94,14 @@ interface GatherResult {
   "success": bool // whether the player was successful in gathering the resource
   "loot": Resource[] // the resources gathered
   "depletion": int // the amount of the resource that was depleted
-  "message": str // a message to display to the user based on if they were successful or not with information on why they were successful or not
+  "message": str // a message to display to the user in a story format about what happened involving the depleted resources and tools used. Make the story descriptive.
 }
 
 const attemptToGatherResource = ({props}) : GatherResult = >{
-  //given the user's skills and tools, determine whether the player can gather the resource.
+  //given the user's skills and tools, determine whether the player can gather the resource given their tools.
   //if they can, return the resource and a success message
   //if they can't, return a failure message 
+  
   return game.attemptToGatherResource(props)
 }
 

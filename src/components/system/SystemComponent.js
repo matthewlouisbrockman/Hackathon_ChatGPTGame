@@ -32,7 +32,7 @@ export const SystemComponent = () => {
 const DisplayWindow = styled.div`
   display: flex;
   flex-direction: column;
-  height: 80px;
+  height: 70px;
   backgroundcolor: white;
   color: black;
   overflow-y: scroll;
