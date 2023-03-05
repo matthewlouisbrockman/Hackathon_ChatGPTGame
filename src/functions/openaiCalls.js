@@ -49,22 +49,28 @@ interface Resource {
     "count" : int // the number of this resource found at the location
 }
 
-const exploreForResources = ({props}) : Resource[] =>{
+interface exploreForResourcesResult {
+    "resources": Resource[] //the list of resources found at the location
+    "message": str //a message to the user about what they found and some information about it (e.g. you found blah at the blah)
+}
+
+const exploreForResources = ({props}) : exploreForResourcesResult =>{
     //given the location, come up with a list of resources that should be available there. Should add more resources that haven't been uncovered there yet either.
     return game.detectNewResources(props)
 }}
 
-//print the list of resources
-console.log('AI:', exploreForResources(${JSON.stringify({
+//print the exploreForResourcesResult
+console.log(exploreForResources(${JSON.stringify({
     player,
     location,
     count: 5,
   })}))
 
-  AI: [`;
+  AI:`;
 
   const responses = await query(prompt);
-  const response = "[" + responses[0];
+  console.log("responses", responses);
+  const response = responses[0];
   const parsed = JSON.parse(response);
 
   if (parsed.error) {

@@ -27,9 +27,10 @@ const LocationDisplayComponent = () => {
   console.log("location", currentLocation);
 
   const handleExploreLocation = async () => {
-    exploreLocation(currentLocation).then((newResources) => {
-      console.log("newResources", newResources);
+    exploreLocation(currentLocation).then((res) => {
+      console.log("res", res);
       //this returns [{"name", "count"}] - update the locationTable[currentLocation].resources with the new resources
+      const newResources = res.resources;
       newResources.forEach((resource) => {
         const name = resource.name;
         const count = resource.count;
