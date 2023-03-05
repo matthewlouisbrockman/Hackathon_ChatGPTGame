@@ -50,6 +50,31 @@ const RecipeDisplay = () => {
     });
   };
 
+  const handleCreateTool = (recipe) => {
+    //create the tool
+    console.log("making tool", recipe);
+    //check if the user has the resources
+    const recipeResources = recipes[recipe];
+    const userResources = user.resources;
+    let hasResources = true;
+
+    Object.keys(recipeResources).forEach((resource) => {
+      if ((userResources[resource] || 0) < recipeResources[resource]) {
+        hasResources = false;
+      }
+    });
+    if (hasResources) {
+      console.log("has resources");
+    } else {
+      setMessages((prevState) => {
+        return [
+          ...prevState,
+          "You do not have the resources to make this tool",
+        ];
+      });
+    }
+  };
+
   //recipe is {[name]: count]}
   return (
     <div>
@@ -68,6 +93,13 @@ const RecipeDisplay = () => {
           {Object.keys(recipes).map((recipe) => {
             return (
               <RecipeRow>
+                <button
+                  onClick={() => {
+                    handleCreateTool(recipe);
+                  }}
+                >
+                  Create
+                </button>
                 <div>{recipe}:</div>
                 {Object.keys(recipes[recipe] || {}).map((ingredient) => {
                   return (
