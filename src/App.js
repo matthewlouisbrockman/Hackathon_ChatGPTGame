@@ -1,13 +1,15 @@
 import styled from "@emotion/styled";
 import { UserComponent } from "./components/user/UserComponent";
 import { WorldComponent } from "./components/world/WorldComponent";
-
+import { SystemComponent } from "./components/system/SystemComponent";
 import { GameStateProvider } from "./contexts/GameStateContext";
 
 function App() {
   return (
     <GameStateProvider>
       <MainPage>
+        <SystemComponent />
+
         <GameDisplayRow>
           <GameDisplayPanel>
             <UserComponent />
@@ -39,7 +41,7 @@ const GameDisplayRow = styled.div`
   display: flex;
   flex-direction: row;
   width: calc(100% - 30px);
-  height: calc(100% - 30px);
+  height: calc(100% - 130px);
   gap: 5px;
 `;
 
