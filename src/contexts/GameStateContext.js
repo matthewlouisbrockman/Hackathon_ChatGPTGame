@@ -16,10 +16,11 @@ export const GameStateProvider = ({ children }) => {
     tools: {},
   });
 
-  const [availableLocations, setAvailableLocations] = useState({
+  const [locationTable, setLocationTable] = useState({
     LovelyWoods: {
       name: "Lovely Woods",
       description: "A light and friendly forest",
+      resources: {},
     },
   });
 
@@ -34,8 +35,8 @@ export const GameStateProvider = ({ children }) => {
         setUser,
         availableResources,
         setAvailableResources,
-        availableLocations,
-        setAvailableLocations,
+        locationTable,
+        setLocationTable,
         currentLocation,
         setCurrentLocation,
       }}
