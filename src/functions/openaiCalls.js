@@ -276,3 +276,52 @@ AI:`;
   console.log("Technology discovered, returning", parsed);
   return parsed;
 };
+
+export const createBuildingBlueprint = async (player) => {
+  const prompt = `from advancedAI import game //this is an advanced module that can do various AI tasks
+
+interface BuildingBlueprint {
+  "name": str // the name of the building (e.g. "house", or "fishing hut")
+  "description": str // a description of the building and how it can be used
+  "resources": {[name: str]: int]} // the ingrediants required to create the building (e.g. house requires 1 stone and 1 wood, so ingrediants would be {"stone": 1, "wood": 1})
+}
+
+interface CreateBuildingBlueprintResult {
+  "success": bool // whether the user has the resources to make the building
+  "building": BuildingBlueprint // the building blueprint created
+  "message": str // a message to display to the user in a story format about what happened involving the depleted resources and tools used. Make the story descriptive.
+}
+
+const createBuildingBlueprint = ({props}) : CreateBuildingBlueprintResult = >{
+  // given the user's resources and tools, determine whether the user can create a building blueprint
+  const availableResources = props.resources
+  const availableTools = props.tools
+  const existingTechnology = props.technology
+  const existingBuildings = props.buildings
+  const existingBluePrints = props.blueprints
+
+  const newBuildingBlueprint = game.discoverBuildingBlueprint(availableResources, availableTools, existingTechnology, existingBuildings, existingBluePrints)
+}
+
+//print the result
+console.log(createBuildingBlueprint(${JSON.stringify({
+    resources: player.resources,
+    tools: player.tools,
+    technologies: player.technologies,
+    buildings: player.buildings,
+    blueprints: player.blueprints,
+  })}))
+AI:`;
+
+  const responses = await query(prompt);
+  console.log("responses", responses);
+  const parsed = JSON.parse(responses[0]);
+
+  if (parsed.error) {
+    console.log("error: ", parsed.error);
+    return [];
+  }
+
+  console.log("Building blueprint created, returning", parsed);
+  return parsed;
+};
