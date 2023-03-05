@@ -24,6 +24,8 @@ export const GameStateProvider = ({ children }) => {
 
   const [availableResources, setAvailableResources] = useState({});
 
+  const [messages, setMessages] = useState([]);
+
   return (
     <GameStateContext.Provider
       value={{
@@ -35,6 +37,8 @@ export const GameStateProvider = ({ children }) => {
         setLocationTable,
         currentLocation,
         setCurrentLocation,
+        messages,
+        setMessages,
       }}
     >
       {children}
