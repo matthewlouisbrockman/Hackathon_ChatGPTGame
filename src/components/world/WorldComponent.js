@@ -80,9 +80,9 @@ const LocationDisplayComponent = () => {
       <div>
         Resources:
         {Object.keys(locationTable[currentLocation]?.resources).map(
-          (resource) => {
+          (resource, idx) => {
             return (
-              <div>
+              <div key={idx}>
                 {" "}
                 <button
                   onClick={() => {
