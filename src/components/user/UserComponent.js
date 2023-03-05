@@ -151,6 +151,10 @@ const RecipeIngredient = styled.div`
 
 const TechnologyDisplay = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const { user } = useContext(GameStateContext);
+
+  const technologies = user.technologies;
+
   return (
     <div>
       <div
@@ -162,6 +166,21 @@ const TechnologyDisplay = () => {
         Technologies
         {isOpen ? " [-]" : " [+]"}
       </div>
+      {isOpen && (
+        <>
+          {Object.keys(technologies || {}).length === 0 && (
+            <p>No Technologies</p>
+          )}
+          {Object.keys(technologies || {}).map((technology) => {
+            return (
+              <div>
+                <div>{technology}:</div>
+                <div>{technologies[technology]}</div>
+              </div>
+            );
+          })}
+        </>
+      )}
     </div>
   );
 };
