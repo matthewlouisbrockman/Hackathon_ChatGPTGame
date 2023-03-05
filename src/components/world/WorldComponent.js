@@ -1,7 +1,10 @@
 import styled from "@emotion/styled";
 import { useContext } from "react";
 import { GameStateContext } from "../../contexts/GameStateContext";
-import { exploreLocation } from "../../functions/openaiCalls";
+import {
+  exploreLocation,
+  attemptToGatherResource,
+} from "../../functions/openaiCalls";
 
 export const WorldComponent = () => {
   return (
@@ -82,7 +85,7 @@ const LocationDisplayComponent = () => {
                 {" "}
                 <button
                   onClick={() => {
-                    handleGather(resource);
+                    attemptToGatherResource(resource);
                   }}
                 >
                   Gather

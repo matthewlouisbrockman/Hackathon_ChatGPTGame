@@ -75,3 +75,44 @@ console.log('AI:', exploreForResources(${JSON.stringify({
   console.log("got resources, returning");
   return parsed;
 };
+
+export const attemptToGatherResource = async (player, resource) => {
+  const prompt = `from advancedAI import game //this is an advanced module that can do various AI tasks
+
+interface Resource {
+  "name": str // the name of the resource gathered (e.g. "wood", or "food")
+  "count" : int // the count
+}
+
+interface GatherResult {
+  "success": bool // whether the player was successful in gathering the resource
+  "loot": Resource[] // the resources gathered
+  "depletion": int // the amount of the resource that was depleted
+  "message": str // a message to display to the user based on if they were successful or not with information on why they were successful or not
+}
+
+const attemptToGatherResource = ({props}) : GatherResult = >{
+  //given the user's skills and tools, determine whether the player can gather the resource.
+  //if they can, return the resource and a success message
+  //if they can't, return a failure message 
+  return game.attemptToGatherResource(props)
+}
+
+//print the result
+console.log('AI:', attemptToGatherResource(${JSON.stringify({
+    player,
+    resource,
+  })}))
+AI:`;
+  const responses = await query(prompt);
+  console.log("responses", responses);
+  const parsed = JSON.parse(responses[0]);
+
+  if (parsed.error) {
+    console.log("error: ", parsed.error);
+    return [];
+  }
+
+  console.log("Resource gathered, returning", parsed);
+  return parsed;
+};
