@@ -45,7 +45,7 @@ export const exploreLocation = async (player, location) => {
   const prompt = `from advancedAI import game //this is an advanced module that can do various AI tasks
   
 interface Resource {
-    "name": str // the name of the resource found at the location (e.g. "tree", or "rocks" "water" might be in a forest but vary it)
+    "name": str // the name of the resource found at the location (e.g. "tree", or "rocks" "water" might be in a forest but vary it.  )
     "count" : int // the number of this resource found at the location
 }
 
@@ -285,7 +285,6 @@ interface BuildingBlueprint {
   "description": str // a description of the building and how it can be used
   "resources": {[name: str]: int]} // the ingrediants required to create the building (e.g. house requires 1 stone and 1 wood, so ingrediants would be {"stone": 1, "wood": 1})
   "dailyResources": {[name: str]: int]} // the resource the building can produce each day, should be at least one resource and it can be a refinement of resources you have
-  "dailyCost" : {[name: str]: int]} // the cost of running the building each day, should be at least one resource and it can be a refinement of resources you have
 }
 
 interface CreateBuildingBlueprintResult {

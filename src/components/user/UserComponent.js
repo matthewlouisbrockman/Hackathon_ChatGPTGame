@@ -11,7 +11,6 @@ import {
 
 export const UserComponent = () => {
   const { user } = useContext(GameStateContext);
-  console.log("user", user);
 
   return (
     <div>
@@ -234,12 +233,10 @@ const BluePrintsDisplay = () => {
         });
       }
       if (newBluePrint) {
-        console.log("newBluePrint", newBluePrint);
         user.blueprints[newBluePrint.name] = {
           description: newBluePrint.description,
           resources: newBluePrint.resources,
           dailyResources: newBluePrint.dailyResources,
-          dailyCost: newBluePrint.dailyCost,
         };
         setUser({ ...user });
       }
@@ -309,27 +306,6 @@ const BluePrintsDisplay = () => {
                           <div>{ingredient}: </div>
                           <div>
                             {blueprints[blueprint].dailyResources[ingredient]}
-                          </div>
-                        </RecipeIngredient>
-                      );
-                    }
-                  )}
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: "10px",
-                  }}
-                >
-                  <div>Costs: </div>
-                  {Object.keys(blueprints[blueprint]?.dailyCost || {}).map(
-                    (ingredient, idx) => {
-                      return (
-                        <RecipeIngredient key={idx}>
-                          <div>{ingredient}: </div>
-                          <div>
-                            {blueprints[blueprint].dailyCost[ingredient]}
                           </div>
                         </RecipeIngredient>
                       );
