@@ -239,6 +239,7 @@ const BluePrintsDisplay = () => {
           description: newBluePrint.description,
           resources: newBluePrint.resources,
           dailyResources: newBluePrint.dailyResources,
+          dailyCost: newBluePrint.dailyCost,
         };
         setUser({ ...user });
       }
@@ -281,9 +282,9 @@ const BluePrintsDisplay = () => {
                 >
                   <div>Requires: </div>
                   {Object.keys(blueprints[blueprint]?.resources || {}).map(
-                    (ingredient) => {
+                    (ingredient, idx) => {
                       return (
-                        <RecipeIngredient>
+                        <RecipeIngredient key={idx}>
                           <div>{ingredient}: </div>
                           <div>
                             {blueprints[blueprint].resources[ingredient]}
@@ -302,12 +303,33 @@ const BluePrintsDisplay = () => {
                 >
                   <div>Produces: </div>
                   {Object.keys(blueprints[blueprint]?.dailyResources || {}).map(
-                    (ingredient) => {
+                    (ingredient, idx) => {
                       return (
-                        <RecipeIngredient>
+                        <RecipeIngredient key={idx}>
                           <div>{ingredient}: </div>
                           <div>
                             {blueprints[blueprint].dailyResources[ingredient]}
+                          </div>
+                        </RecipeIngredient>
+                      );
+                    }
+                  )}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: "10px",
+                  }}
+                >
+                  <div>Costs: </div>
+                  {Object.keys(blueprints[blueprint]?.dailyCost || {}).map(
+                    (ingredient, idx) => {
+                      return (
+                        <RecipeIngredient key={idx}>
+                          <div>{ingredient}: </div>
+                          <div>
+                            {blueprints[blueprint].dailyCost[ingredient]}
                           </div>
                         </RecipeIngredient>
                       );
