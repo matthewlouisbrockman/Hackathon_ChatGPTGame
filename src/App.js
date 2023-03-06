@@ -2,24 +2,33 @@ import styled from "@emotion/styled";
 import { UserComponent } from "./components/user/UserComponent";
 import { WorldComponent } from "./components/world/WorldComponent";
 import { SystemComponent } from "./components/system/SystemComponent";
-import { GameStateProvider } from "./contexts/GameStateContext";
-
+import { GameStateContext } from "./contexts/GameStateContext";
+import { useContext } from "react";
+import { Victory } from "./components/system/Victory";
 function App() {
-  return (
-    <GameStateProvider>
-      <MainPage>
-        <SystemComponent />
+  const { gameWon } = useContext(GameStateContext);
 
-        <GameDisplayRow>
-          <GameDisplayPanel>
-            <UserComponent />
-          </GameDisplayPanel>
-          <GameDisplayPanel>
-            <WorldComponent />
-          </GameDisplayPanel>
-        </GameDisplayRow>
+  if (gameWon) {
+    return (
+      <MainPage>
+        <Victory />
       </MainPage>
-    </GameStateProvider>
+    );
+  }
+
+  return (
+    <MainPage>
+      <SystemComponent />
+
+      <GameDisplayRow>
+        <GameDisplayPanel>
+          <UserComponent />
+        </GameDisplayPanel>
+        <GameDisplayPanel>
+          <WorldComponent />
+        </GameDisplayPanel>
+      </GameDisplayRow>
+    </MainPage>
   );
 }
 

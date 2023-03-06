@@ -5,6 +5,7 @@ export const GameStateContext = createContext();
 
 export const GameStateProvider = ({ children }) => {
   const [day, setDay] = useState(1);
+  const [gameWon, setGameWon] = useState(false);
 
   const [user, setUser] = useState({
     resources: {},
@@ -54,6 +55,7 @@ export const GameStateProvider = ({ children }) => {
         setMessages,
         day,
         setDay,
+        gameWon,
       }}
     >
       {children}

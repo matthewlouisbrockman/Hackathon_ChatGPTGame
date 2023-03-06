@@ -227,7 +227,7 @@ const TechnologyDisplay = () => {
 
 const BluePrintsDisplay = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const { user, setUser, setMessages } = useContext(GameStateContext);
+  const { user, setUser, setMessages, day } = useContext(GameStateContext);
 
   const blueprints = user.blueprints;
 
@@ -364,9 +364,11 @@ const BluePrintsDisplay = () => {
               </RecipeOutline>
             );
           })}
-          <button onClick={handleDiscoverNewBuilding}>
-            Discover New Blueprint
-          </button>
+          {day > 10 && (
+            <button onClick={handleDiscoverNewBuilding}>
+              Discover New Blueprint
+            </button>
+          )}
         </>
       )}
     </div>
