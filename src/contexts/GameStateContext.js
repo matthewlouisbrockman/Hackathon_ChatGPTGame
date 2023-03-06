@@ -16,6 +16,12 @@ export const GameStateProvider = ({ children }) => {
     blueprints: {},
   });
 
+  useEffect(() => {
+    if (user.resources.paperclip) {
+      setGameWon(true);
+    }
+  }, [user]);
+
   const [locationTable, setLocationTable] = useState({
     LovelyWoods: {
       name: "Lovely Woods",
