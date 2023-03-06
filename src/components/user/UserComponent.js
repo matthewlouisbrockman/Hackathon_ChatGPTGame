@@ -42,7 +42,7 @@ const UserStatusComponent = ({ user }) => {
 
 const RecipeDisplay = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const { user, setMessages } = useContext(GameStateContext);
+  const { user, setMessages, setGameWon } = useContext(GameStateContext);
   const recipes = user.recipes;
   const handleDiscoverTool = (name) => {
     discoverTool(user, name).then((res) => {
@@ -71,6 +71,8 @@ const RecipeDisplay = () => {
     const userResources = user.resources;
     let hasResources = true;
 
+    console.log("recipe", recipe);
+
     Object.keys(recipeResources).forEach((resource) => {
       if ((userResources[resource] || 0) < recipeResources[resource]) {
         hasResources = false;
@@ -83,6 +85,9 @@ const RecipeDisplay = () => {
       });
       //add the tool
       user.tools[recipe] = recipes[recipe].description;
+      if (recipe === "paperclip") {
+        setGameWon(true);
+      }
       setMessages((prevState) => {
         return [...prevState, `You have created a ${recipe}`];
       });

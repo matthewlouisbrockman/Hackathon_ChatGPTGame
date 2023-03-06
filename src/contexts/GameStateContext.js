@@ -16,12 +16,6 @@ export const GameStateProvider = ({ children }) => {
     blueprints: {},
   });
 
-  useEffect(() => {
-    if (user.resources.paperclip) {
-      setGameWon(true);
-    }
-  }, [user]);
-
   const [locationTable, setLocationTable] = useState({
     LovelyWoods: {
       name: "Lovely Woods",
@@ -42,7 +36,7 @@ export const GameStateProvider = ({ children }) => {
       setDay((prevState) => {
         return prevState + 1;
       });
-    }, 5000);
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -62,6 +56,7 @@ export const GameStateProvider = ({ children }) => {
         day,
         setDay,
         gameWon,
+        setGameWon,
       }}
     >
       {children}
