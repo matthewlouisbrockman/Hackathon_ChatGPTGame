@@ -9,7 +9,6 @@ export const GameStateProvider = ({ children }) => {
 
   const [user, setUser] = useState({
     resources: {},
-    tools: {},
     recipes: {},
     technologies: {},
     buildings: {},
@@ -36,9 +35,38 @@ export const GameStateProvider = ({ children }) => {
       setDay((prevState) => {
         return prevState + 1;
       });
-    }, 1000);
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    updateResourcesFromBuildings();
+  }, [day]);
+
+  const updateResourcesFromBuildings = () => {
+    console.log("updating resources from buildings");
+    const buildings = user.buildings;
+    const blueprints = user.blueprints;
+    const currentResources = user.resources;
+    console.log("currentResources: ", currentResources);
+
+    for (const building in buildings) {
+      console.log("building: ", building);
+      const countModifier = buildings[building].count;
+      const dailyResrouces = blueprints[building].dailyResources;
+      for (const resource in dailyResrouces) {
+        const resourceAmount = dailyResrouces[resource] || 0;
+        currentResources[resource] =
+          (currentResources[resource] || 0) + resourceAmount * countModifier;
+      }
+    }
+    setUser((prevState) => {
+      return {
+        ...prevState,
+        resources: currentResources,
+      };
+    });
+  };
 
   return (
     <GameStateContext.Provider

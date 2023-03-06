@@ -94,11 +94,11 @@ interface GatherResult {
   "success": bool // whether the player was successful in gathering the resource
   "loot": Resource[] // the resources gathered
   "depletion": int // the amount of the resource that was depleted
-  "message": str // a message to display to the user in a story format about what happened involving the depleted resources and tools used. Make the story descriptive.
+  "message": str // a message to display to the user in a story format about what happened involving the depleted resources. Make the story descriptive.
 }
 
 const attemptToGatherResource = ({props}) : GatherResult = >{
-  //given the user's skills and tools, determine whether the player can gather the resource given their tools.
+  //given the user's skills and tools, determine whether the player can gather the resource.
   //if they can, return the resource and a success message
   //if they can't, return a failure message 
   
@@ -282,19 +282,17 @@ interface DiscoverTechnologyResult {
 const discoverTechnology = ({props}) : DiscoverTechnologyResult = >{
   // given the user's resources and tools, determine a new technology that will enable the user to develop new tools and recipes
   const availableResources = props.resources
-  const existingTools = props.tools
   const existingRecipes = props.recipes
   const existingTechnology = props.technology
 
-  const thingsToDoWithResrouces = game.getThingsToDoWithResources(availableResources, existingTools, existingRecipes) //just evaluate what the avaialbleResources can be used for and use that to determine what the user might want to make
+  const thingsToDoWithResrouces = game.getThingsToDoWithResources(availableResources, existingRecipes) //just evaluate what the avaialbleResources can be used for and use that to determine what the user might want to make
 
-  return game.discoverTechnology(availableResources, availableTools, existingRecipes)
+  return game.discoverTechnology(availableResources, existingRecipes)
 }
 
 //print the result
 console.log(discoverTechnology(${JSON.stringify({
     resources: player.resources,
-    tools: player.tools,
     recipes: player.recipes,
     technology: player.technologies,
   })}))
@@ -330,9 +328,8 @@ interface CreateBuildingBlueprintResult {
 }
 
 const createBuildingBlueprint = ({props}) : CreateBuildingBlueprintResult = >{
-  // given the user's resources and tools, come up with a building and the required resources it will take to build it
+  // given the user's resources, come up with a building and the required resources it will take to build it
   const availableResources = props.resources
-  const availableTools = props.tools
   const existingBluePrints = props.blueprints
   const existingBuildings = props.buildings
 
@@ -343,7 +340,6 @@ const createBuildingBlueprint = ({props}) : CreateBuildingBlueprintResult = >{
 //print the result
 console.log(createBuildingBlueprint(${JSON.stringify({
     resources: player.resources,
-    tools: Object.keys(player.tools),
     buildings: player.buildings,
     blueprints: player.blueprints,
   })}))

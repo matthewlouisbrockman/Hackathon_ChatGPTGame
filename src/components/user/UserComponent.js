@@ -31,7 +31,7 @@ const UserStatusComponent = ({ user }) => {
     >
       <p>Your Stats</p>
       <p>Resources: {JSON.stringify(user.resources)}</p>
-      <p>Tools: {JSON.stringify(user.tools)}</p>
+
       {!!Object.keys(user.resources || {})?.length && <RecipeDisplay />}
       {!!Object.keys(user.recipes || {})?.length && <BluePrintsDisplay />}
       {!!Object.keys(user.buildings || {})?.length && <BuildingsDisplay />}
@@ -46,7 +46,6 @@ const RecipeDisplay = () => {
   const recipes = user.recipes;
   const handleDiscoverTool = (name) => {
     discoverTool(user, name).then((res) => {
-      console.log("res", res);
       const newRecipe = res.tool;
       const newMessage = res.message;
       if (newMessage) {
@@ -71,8 +70,6 @@ const RecipeDisplay = () => {
     const userResources = user.resources;
     let hasResources = true;
 
-    console.log("recipe", recipe);
-
     Object.keys(recipeResources).forEach((resource) => {
       if ((userResources[resource] || 0) < recipeResources[resource]) {
         hasResources = false;
@@ -83,8 +80,10 @@ const RecipeDisplay = () => {
       Object.keys(recipeResources).forEach((resource) => {
         user.resources[resource] -= recipeResources[resource];
       });
-      //add the tool
-      user.tools[recipe] = recipes[recipe].description;
+      //add the tool to resources
+
+      user.resources[recipe] = (user.resources[recipe] || 0) + 1;
+
       if (recipe === "paperclip") {
         setGameWon(true);
       }
@@ -173,63 +172,6 @@ const RecipeIngredient = styled.div`
   gap: 5px;
 `;
 
-const TechnologyDisplay = () => {
-  const [isOpen, setIsOpen] = useState(true);
-  const { user, setUser, setMessages } = useContext(GameStateContext);
-
-  const technologies = user.technologies;
-
-  const handleDiscoverNewTech = () => {
-    discoverTechnology(user).then((res) => {
-      console.log("res", res);
-      const newTech = res.technology;
-      const newMessage = res.message;
-      if (newMessage) {
-        setMessages((prevState) => {
-          return [...prevState, newMessage];
-        });
-      }
-      if (newTech) {
-        console.log("newTech", newTech);
-        user.technologies[newTech.name] = newTech.description;
-        setUser({ ...user });
-      }
-    });
-  };
-
-  return (
-    <div style={{ marginTop: "10px" }}>
-      <div
-        onClick={() => {
-          setIsOpen(!isOpen);
-        }}
-        style={{ cursor: "pointer" }}
-      >
-        Technologies
-        {isOpen ? " [-]" : " [+]"}
-      </div>
-      {isOpen && (
-        <>
-          {Object.keys(technologies || {}).length === 0 && (
-            <p>No Technologies</p>
-          )}
-          {Object.keys(technologies || {}).map((technology) => {
-            return (
-              <div>
-                <div>{technology}:</div>
-                <div>{technologies[technology]}</div>
-              </div>
-            );
-          })}
-          <button onClick={handleDiscoverNewTech}>
-            Discover New Technologies
-          </button>
-        </>
-      )}
-    </div>
-  );
-};
-
 const BluePrintsDisplay = () => {
   const [isOpen, setIsOpen] = useState(true);
   const { user, setUser, setMessages, day } = useContext(GameStateContext);
@@ -238,7 +180,6 @@ const BluePrintsDisplay = () => {
 
   const handleDiscoverNewBuilding = () => {
     createBuildingBlueprint(user).then((res) => {
-      console.log("res", res);
       const newBluePrint = res.blueprint;
       const newMessage = res.message;
       if (newMessage) {
@@ -268,7 +209,7 @@ const BluePrintsDisplay = () => {
         hasResources = false;
       }
     });
-    if (hasResources) {
+    if (hasResources || true) {
       //subtract the resources
       Object.keys(blueprintResources).forEach((resource) => {
         user.resources[resource] -= blueprintResources[resource];
