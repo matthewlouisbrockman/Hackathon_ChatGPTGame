@@ -209,7 +209,7 @@ const BluePrintsDisplay = () => {
         hasResources = false;
       }
     });
-    if (hasResources || true) {
+    if (hasResources) {
       //subtract the resources
       Object.keys(blueprintResources).forEach((resource) => {
         user.resources[resource] -= blueprintResources[resource];
