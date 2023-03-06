@@ -44,8 +44,8 @@ const RecipeDisplay = () => {
   const [isOpen, setIsOpen] = useState(true);
   const { user, setMessages } = useContext(GameStateContext);
   const recipes = user.recipes;
-  const handleDiscoverTool = () => {
-    discoverTool(user).then((res) => {
+  const handleDiscoverTool = (name) => {
+    discoverTool(user, name).then((res) => {
       console.log("res", res);
       const newRecipe = res.tool;
       const newMessage = res.message;
@@ -96,6 +96,8 @@ const RecipeDisplay = () => {
     }
   };
 
+  const [newToolName, setNewToolName] = useState("");
+
   //recipe is {[name]: count]}
   return (
     <div>
@@ -137,10 +139,16 @@ const RecipeDisplay = () => {
           })}
           <button
             onClick={() => {
-              handleDiscoverTool();
+              handleDiscoverTool(newToolName);
             }}
           >
             Discover New Recipes
+            <input
+              value={newToolName}
+              onChange={(e) => {
+                setNewToolName(e.target.value);
+              }}
+            ></input>
           </button>
         </>
       )}

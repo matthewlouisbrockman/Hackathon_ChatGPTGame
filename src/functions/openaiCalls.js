@@ -180,9 +180,9 @@ AI:`;
   return parsed;
 };
 
-export const discoverTool = async (player) => {
+export const discoverTool = async (player, name = null) => {
   console.log("player: ", player);
-  const prompt = `from advancedAI import game //this is an advanced module that can do various AI tasks
+  const randomPrompt = `from advancedAI import game //this is an advanced module that can do various AI tasks
 
 interface Tool {
   "name": str // the name of the tool (e.g. "stone axe", or "steel hammer", but should be variable like "fishing net" or "rope")
@@ -215,6 +215,42 @@ console.log(discoverToolRecipe(${JSON.stringify({
     recipes: player.recipes,
   })}))
 AI:`;
+
+  //if a name is passed, create the resources you need to create that tool
+  const intentfulPrompt = `from advancedAI import game //this is an advanced module that can do various AI tasks
+
+interface Tool {
+  "name": str // the name of the tool (e.g. "stone axe", or "steel hammer", but should be variable like "fishing net" or "rope")
+  "resources": {[name: str]: int]} // the ingrediants required to create the tool (e.g. stone axe requires 1 stone and 1 wood, so ingrediants would be {"stone": 1, "wood": 1})
+  "description": str // a description of the tool and how it can be used
+}
+
+interface DiscoverToolResult {
+  "process": str //list a few of the users' resources and think about how they could be used to make a tool
+  "tool": Tool // the tool discovered
+  "message": str // a message to display to the user in a story format about their resources could be used to make a tool (but they haven't made it yet)
+}
+
+const discoverToolRecipe = ({toolName, resources, tools, recipes}) : DiscoverToolResult = >{
+  // provide the user with the resources they need to create the tool
+  const availableResources = resources
+  const availableTools = tools
+  const existingRecipes = recipes
+
+  return game.discoverToolRecipe(toolName, availableResources, availableTools, existingRecipes) 
+}
+
+//print the result
+console.log(discoverToolRecipe(${JSON.stringify({
+    toolName: name,
+    resources: player.resources,
+    tools: player.tools,
+    recipes: player.recipes,
+  })}))
+AI:`;
+
+  const prompt = name ? intentfulPrompt : randomPrompt;
+
   const responses = await query(prompt);
   console.log("responses", responses);
   const parsed = JSON.parse(responses[0]);
