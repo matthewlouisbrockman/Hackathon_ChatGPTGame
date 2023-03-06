@@ -34,6 +34,7 @@ const UserStatusComponent = ({ user }) => {
       <p>Tools: {JSON.stringify(user.tools)}</p>
       {!!Object.keys(user.resources || {})?.length && <RecipeDisplay />}
       {!!Object.keys(user.recipes || {})?.length && <BluePrintsDisplay />}
+      {!!Object.keys(user.buildings || {})?.length && <BuildingsDisplay />}
       <div></div>
     </div>
   );
@@ -330,3 +331,38 @@ const RecipeOutline = styled.div`
   border: 1px solid black;
   padding: 5px;
 `;
+
+const BuildingsDisplay = () => {
+  const [isOpen, setIsOpen] = useState(true);
+  const { user } = useContext(GameStateContext);
+
+  const buildings = user.buildings;
+  const bluePrints = user.blueprints;
+
+  return (
+    <div style={{ marginTop: "10px" }}>
+      <div
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}
+        style={{ cursor: "pointer" }}
+      >
+        Buildings
+        {isOpen ? " [-]" : " [+]"}
+      </div>
+      {isOpen && (
+        <>
+          {Object.keys(buildings || {}).length === 0 && <p>No buildings</p>}
+          {Object.keys(buildings || {}).map((building) => {
+            return (
+              <div>
+                <div>{building}:</div>
+                <div>{buildings[building]}</div>
+              </div>
+            );
+          })}
+        </>
+      )}
+    </div>
+  );
+};

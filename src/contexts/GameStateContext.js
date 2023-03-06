@@ -1,9 +1,11 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 //game state context
 export const GameStateContext = createContext();
 
 export const GameStateProvider = ({ children }) => {
+  const [day, setDay] = useState(1);
+
   const [user, setUser] = useState({
     resources: {},
     tools: {},
@@ -27,6 +29,16 @@ export const GameStateProvider = ({ children }) => {
 
   const [messages, setMessages] = useState([]);
 
+  //every 10 seconds increment the day
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDay((prevState) => {
+        return prevState + 1;
+      });
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <GameStateContext.Provider
       value={{
@@ -40,6 +52,8 @@ export const GameStateProvider = ({ children }) => {
         setCurrentLocation,
         messages,
         setMessages,
+        day,
+        setDay,
       }}
     >
       {children}
