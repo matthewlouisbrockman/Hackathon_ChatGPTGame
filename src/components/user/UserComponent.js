@@ -244,6 +244,40 @@ const BluePrintsDisplay = () => {
     });
   };
 
+  const handleCreateBuilding = (blueprint) => {
+    //check the resources against hte user
+    const blueprintResources = blueprints[blueprint].resources;
+    const userResources = user.resources;
+    let hasResources = true;
+
+    Object.keys(blueprintResources).forEach((resource) => {
+      if ((userResources[resource] || 0) < blueprintResources[resource]) {
+        hasResources = false;
+      }
+    });
+    if (hasResources) {
+      //subtract the resources
+      Object.keys(blueprintResources).forEach((resource) => {
+        user.resources[resource] -= blueprintResources[resource];
+      });
+      //add the building
+      user.buildings[blueprint] = {
+        description: blueprints[blueprint].description,
+        count: user.buildings[blueprint]?.count + 1 || 1,
+      };
+      setMessages((prevState) => {
+        return [...prevState, `You have created a ${blueprint}`];
+      });
+    } else {
+      setMessages((prevState) => {
+        return [
+          ...prevState,
+          "You do not have the resources to make this building",
+        ];
+      });
+    }
+  };
+
   return (
     <div style={{ marginTop: "10px" }}>
       <div
@@ -268,7 +302,13 @@ const BluePrintsDisplay = () => {
                     gap: "10px",
                   }}
                 >
-                  <button>Create</button>
+                  <button
+                    onClick={() => {
+                      handleCreateBuilding(blueprint);
+                    }}
+                  >
+                    Create
+                  </button>
                   <div>{blueprint}:</div>
                 </div>
                 <div
@@ -356,8 +396,22 @@ const BuildingsDisplay = () => {
           {Object.keys(buildings || {}).map((building) => {
             return (
               <div>
-                <div>{building}:</div>
-                <div>{buildings[building]}</div>
+                <div>
+                  {building} ({buildings[building].count}):
+                </div>
+                <div>{buildings[building].description}</div>
+                <div>Daily Gain: </div>
+                {Object.keys(bluePrints[building]?.dailyResources || {}).map(
+                  (ingredient, idx) => {
+                    return (
+                      <div key={idx}>
+                        {ingredient}:{" "}
+                        {bluePrints[building].dailyResources[ingredient] *
+                          buildings[building].count}
+                      </div>
+                    );
+                  }
+                )}
               </div>
             );
           })}
